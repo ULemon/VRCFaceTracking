@@ -254,17 +254,24 @@ int QuestOpenXR::Update()
 {
 	XrResult Result;
 
-	XrFrameWaitInfo waitInfo;
+	/*XrFrameWaitInfo waitInfo;
 	waitInfo.type = XR_TYPE_FRAME_WAIT_INFO;
 	waitInfo.next = nullptr;
 
 	XrFrameState frameState{ XR_TYPE_FRAME_STATE };
 
-	//Result = RuntimeWrapper.WaitFrame(Session, &waitInfo, &frameState);
-	//if (XR_FAILED(Result))
-	//{
-	//	return 1;
-	//}
+	Result = RuntimeWrapper.WaitFrame(Session, &waitInfo, &frameState);
+	if (XR_FAILED(Result))
+	{
+		return 1;
+	}
+
+	XrFrameBeginInfo beginInfo{ XR_TYPE_FRAME_BEGIN_INFO };
+	Result = RuntimeWrapper.BeginFrame(Session, &beginInfo);
+	if (XR_FAILED(Result))
+	{
+		return 4;
+	}*/
 
 	XrFaceExpressionWeightsFB expressionWeights{ XR_TYPE_FACE_EXPRESSION_WEIGHTS_FB };
 	expressionWeights.next = nullptr;
@@ -285,12 +292,26 @@ int QuestOpenXR::Update()
 
 	XrEyeGazesInfoFB gazesInfo{ XR_TYPE_EYE_GAZES_INFO_FB };
 	gazesInfo.baseSpace = HmdSpace;
+	//gazesInfo.time = frameState.predictedDisplayTime;
 
 	Result = RuntimeWrapper.GetEyeGazesFB(EyeTracker, &gazesInfo, &EyeGazes);
 	if (XR_FAILED(Result))
 	{
 		return 3;
 	}
+
+	//XrFrameEndInfo endInfo{ XR_TYPE_FRAME_END_INFO };
+	//endInfo.next = nullptr;
+	//endInfo.displayTime = frameState.predictedDisplayTime;
+	//endInfo.environmentBlendMode = XR_ENVIRONMENT_BLEND_MODE_OPAQUE;
+	//endInfo.layerCount = 0;
+	//endInfo.layers = nullptr;
+
+	//Result = RuntimeWrapper.EndFrame(Session, &endInfo);
+	//if (XR_FAILED(Result))
+	//{
+	//	return 5;
+	//}
 
 	return 0;
 }
@@ -302,6 +323,19 @@ float QuestOpenXR::GetCheekPuff(int cheekIndex)
 		return FaceWeights[2];
 	}
 	return FaceWeights[3];
+}
+
+XrQuaternionf QuestOpenXR::GetEyeOrientation(int eyeIndex)
+{
+	return EyeGazes.gaze[eyeIndex].gazePose.orientation;
+}
+
+void QuestOpenXR::GetFaceWeights(float outFaceExpressionFB[10])
+{
+	for (int i = 0; i < XR_FACE_EXPRESSION_COUNT_FB; ++i)
+	{
+		(outFaceExpressionFB)[i] = FaceWeights[i];
+	}
 }
 
 bool QuestOpenXR::EnumerateExtensions()

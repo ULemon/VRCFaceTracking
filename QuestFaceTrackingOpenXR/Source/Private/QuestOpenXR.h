@@ -1,7 +1,10 @@
 #pragma once
 #include "OpenXRRuntimeWrapper.h"
+#include "ExportedType.h"
+
 #include <set>
 #include <string>
+#include <vector>
 
 class QuestOpenXR
 {
@@ -12,6 +15,8 @@ public:
 	int InitRuntime();
 	int Update();
 	float GetCheekPuff(int cheekIndex);
+	XrQuaternionf GetEyeOrientation(int eyeIndex);
+	void GetFaceWeights(float outFaceExpressionFB[63]);
 
 	OpenXRRuntimeWrapper* GetRuntimeWrapper() { return &RuntimeWrapper; }
 private:
