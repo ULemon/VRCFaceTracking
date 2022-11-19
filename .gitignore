@@ -5,3 +5,8 @@ riderModule.iml
 /_ReSharper.Caches/
 VRCFaceTracking/ParamLib
 VRCFaceTracking/ParamLib/*
+
+.vs
+Debug
+*.vcxproj.user
+*.vcxproj.filters
