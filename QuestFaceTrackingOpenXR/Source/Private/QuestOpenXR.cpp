@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
-#pragma comment(lib,"d3d11.lib")
+//#pragma comment(lib,"d3d11.lib")
 
 using namespace std;
 
@@ -121,13 +121,13 @@ int QuestOpenXR::InitRuntime()
 		return 5;
 	}
 
-	ID3D11Device* Device;
-	D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0x00, NULL, 0, D3D11_SDK_VERSION, &Device, NULL, NULL);
+	//ID3D11Device* Device;
+	//D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0x00, NULL, 0, D3D11_SDK_VERSION, &Device, NULL, NULL);
 
 	XrGraphicsBindingD3D11KHR graphicBinding;
 	graphicBinding.type = XR_TYPE_GRAPHICS_BINDING_D3D11_KHR;
 	graphicBinding.next = nullptr;
-	graphicBinding.device = Device;
+	graphicBinding.device = 0;
 
 	XrSessionCreateInfo sessionInfo;
 	sessionInfo.type = XR_TYPE_SESSION_CREATE_INFO;
